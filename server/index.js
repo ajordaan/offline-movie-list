@@ -1,16 +1,17 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
 const app = express();
 const port = 3000;
+
+app.use(cors());
 
 // Middleware to parse JSON requests
 app.use(bodyParser.json());
 
 // Fake DB
 let todos = [
-  { id: 1, title: 'Learn Node.js', completed: false },
-  { id: 2, title: 'Build a Todo App', completed: true },
 ];
 
 app.get('/todos', (req, res) => {
@@ -32,6 +33,8 @@ app.post('/todos', (req, res) => {
   const newTodo = req.body;
   newTodo.persisted = true;
   todos.push(newTodo);
+
+  console.log('Added New Todo ', newTodo)
 
   res.status(201).json(newTodo);
 });
