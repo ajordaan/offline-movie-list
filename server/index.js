@@ -31,6 +31,7 @@ app.get("/movies/:id", (req, res) => {
 app.post("/movies", (req, res) => {
   const newMovie = req.body;
   newMovie.persisted = true;
+  newMovie.rating = getRandomInt(3, 9)
   movies.push(newMovie);
 
   console.log("Added New Movie ", newMovie);
@@ -62,3 +63,7 @@ app.delete("/movies/:id", (req, res) => {
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
+
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * max) + min;
+}
