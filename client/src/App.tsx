@@ -1,42 +1,42 @@
 import { useEffect, useState } from "react";
-import { Todo } from "./types";
-import TodoList from "./todoList";
-import AddTodoItem from "./AddTodoItem";
+import { Movie } from "./types";
+import MovieList from "./MovieList";
+import AddMovieItem from "./AddMovieItem";
 import ky from 'ky';
 
 function App() {
 
-  const [todos, setTodos] = useState([] as Todo[])
+  const [movies, setMovies] = useState([] as Movie[])
 
-  const createTodo = async (description: string) => {
-    console.log('todo created')
-    console.log(description)
-    const todo: Todo = { id: 'sdff', description: description, persisted: false, completed: false }
+  const createMovie = async (name: string) => {
+    console.log('movie created')
+    console.log(name)
+    const movie: Movie = { id: 'sdff', name, persisted: false, completed: false }
 
-    const json = await ky.post('http://localhost:3000/todos', { json: todo }).json();
+    const json = await ky.post('http://localhost:3000/movies', { json: movie }).json();
     console.log(json)
-    setTodos([todo, ...todos])
+    setMovies([movie, ...movies])
   }
 
-  const loadTodos = async() => {
-    const serverTodos: Todo[] = await ky.get('http://localhost:3000/todos').json();
-    console.log(serverTodos)
-    setTodos([...serverTodos])
+  const loadMovies = async() => {
+    const serverMovies: Movie[] = await ky.get('http://localhost:3000/movies').json();
+    console.log(serverMovies)
+    setMovies([...serverMovies])
   }
 useEffect(() => {
-  loadTodos()
+  loadMovies()
   }, []);
 
 
 
   return (
     <>
-      <h1 className="p-5 text-center text-3xl font-bold"> TODO List </h1>
+      <h1 className="p-5 text-center text-3xl font-bold"> Movie List </h1>
       <div className="flex justify-center">
-        <AddTodoItem onCreateTodo={createTodo} />
+        <AddMovieItem onCreateMovie={createMovie} />
       </div>
       <div className="pt-10 grid place-items-center">
-        <TodoList todos={todos} />
+        <MovieList movies={movies} />
       </div>
     </>
   );

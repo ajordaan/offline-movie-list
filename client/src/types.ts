@@ -1,6 +1,7 @@
-export interface Todo {
+export interface Movie {
   id:string;
-  description: string;
+  name: string;
+  rating?: number;
   persisted: boolean;
   completed: boolean;
 }

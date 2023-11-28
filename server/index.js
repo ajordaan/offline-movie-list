@@ -11,52 +11,52 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // Fake DB
-let todos = [];
+let movies = [];
 
-app.get("/todos", (req, res) => {
-  res.json(todos);
+app.get("/movies", (req, res) => {
+  res.json(movies);
 });
 
-app.get("/todos/:id", (req, res) => {
+app.get("/movies/:id", (req, res) => {
   const id = parseInt(req.params.id);
-  const todo = todos.find((todo) => todo.id === id);
+  const movie = movies.find((movie) => movie.id === id);
 
-  if (todo) {
-    res.json(todo);
+  if (movie) {
+    res.json(movie);
   } else {
-    res.status(404).json({ message: "Todo not found" });
+    res.status(404).json({ message: "Movie not found" });
   }
 });
 
-app.post("/todos", (req, res) => {
-  const newTodo = req.body;
-  newTodo.persisted = true;
-  todos.push(newTodo);
+app.post("/movies", (req, res) => {
+  const newMovie = req.body;
+  newMovie.persisted = true;
+  movies.push(newMovie);
 
-  console.log("Added New Todo ", newTodo);
+  console.log("Added New Movie ", newMovie);
 
-  res.status(201).json(newTodo);
+  res.status(201).json(newMovie);
 });
 
-app.put("/todos/:id", (req, res) => {
+app.put("/movies/:id", (req, res) => {
   const id = parseInt(req.params.id);
-  const updatedTodo = req.body;
-  updatedTodo.persisted = true;
-  const index = todos.findIndex((todo) => todo.id === id);
+  const updatedMovie = req.body;
+  updatedMovie.persisted = true;
+  const index = movies.findIndex((movie) => movie.id === id);
 
   if (index !== -1) {
-    todos[index] = { ...todos[index], ...updatedTodo };
-    res.json(todos[index]);
+    movies[index] = { ...movies[index], ...updatedMovie };
+    res.json(movies[index]);
   } else {
-    res.status(404).json({ message: "Todo not found" });
+    res.status(404).json({ message: "Movie not found" });
   }
 });
 
-app.delete("/todos/:id", (req, res) => {
+app.delete("/movies/:id", (req, res) => {
   const id = parseInt(req.params.id);
-  const todo = todos.find((todo) => todo.id === id);
-  todo.deleted = true;
-  res.json({ message: "Todo deleted successfully" });
+  const movie = movies.find((movie) => movie.id === id);
+  movie.deleted = true;
+  res.json({ message: "Movie deleted successfully" });
 });
 
 app.listen(port, () => {
