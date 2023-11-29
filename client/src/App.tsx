@@ -2,31 +2,40 @@ import { useEffect, useState } from "react";
 import { Movie } from "./types";
 import MovieList from "./MovieList";
 import AddMovieItem from "./AddMovieItem";
-import ky from 'ky';
+import ky from "ky";
 
 function App() {
+  const [movies, setMovies] = useState([] as Movie[]);
 
-  const [movies, setMovies] = useState([] as Movie[])
+  const generateId = () => Date.now().toString(36) + Math.random().toString(36).substring(2);
 
   const createMovie = async (name: string) => {
-    console.log('movie created')
-    console.log(name)
-    const movie: Movie = { id: 'sdff', name, persisted: false, completed: false }
+    console.log("movie created");
+    console.log(name);
+    const movie: Movie = {
+      id: generateId(),
+      name,
+      persisted: false,
+      watched: false,
+    };
 
-    const json = await ky.post('http://localhost:3000/movies', { json: movie }).json();
-    console.log(json)
-    setMovies([movie, ...movies])
-  }
+    const serverMovie:Movie = await ky
+      .post("http://localhost:3000/movies", { json: movie })
+      .json();
+    console.log(serverMovie);
+    setMovies([serverMovie, ...movies]);
+  };
 
-  const loadMovies = async() => {
-    const serverMovies: Movie[] = await ky.get('http://localhost:3000/movies').json();
-    console.log(serverMovies)
-    setMovies([...serverMovies])
-  }
-useEffect(() => {
-  loadMovies()
+  const loadMovies = async () => {
+    const serverMovies: Movie[] = await ky
+      .get("http://localhost:3000/movies")
+      .json();
+    console.log(serverMovies);
+    setMovies([...serverMovies]);
+  };
+  useEffect(() => {
+    loadMovies();
   }, []);
-
 
 
   return (

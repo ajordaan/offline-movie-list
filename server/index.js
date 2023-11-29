@@ -40,7 +40,7 @@ app.post("/movies", (req, res) => {
 });
 
 app.put("/movies/:id", (req, res) => {
-  const id = parseInt(req.params.id);
+  const id = req.params.id;
   const updatedMovie = req.body;
   updatedMovie.persisted = true;
   const index = movies.findIndex((movie) => movie.id === id);

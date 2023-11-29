@@ -3,5 +3,5 @@ export interface Movie {
   name: string;
   rating?: number;
   persisted: boolean;
-  completed: boolean;
+  watched: boolean;
 }
